@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Timeline</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    button, select {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+    .status {
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button type="button" id="prevBtn">◀ Previous</button>
+    <button type="button" id="nextBtn">Next ▶</button>
+    <select id="eventSelect"></select>
+    <span class="status" id="statusText"></span>
+  </div>
+
+  <div>                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.5.0.min.js" integrity="sha256-fHbNLP+GlIXN+efbQec78UkemUz3NJp7UmfGxC1tNxs=" crossorigin="anonymous"></script>                <div id="timeline_plot" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("timeline_plot")) {                    Plotly.newPlot(                        "timeline_plot",                        [{"hoverinfo":"skip","line":{"color":"gray","width":3},"mode":"lines","name":"Timeline","showlegend":false,"x":["2020-05-01T00:00:00","2026-07-31T00:00:00"],"y":[0,0],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2020-05-01T00:00:00","2020-05-01T00:00:00"],"y":[0,1.2],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2021-05-01T00:00:00","2021-05-01T00:00:00"],"y":[0,-1.2],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2023-05-19T00:00:00","2023-05-19T00:00:00"],"y":[0,1.8],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2024-01-29T00:00:00","2024-01-29T00:00:00"],"y":[0,-1.8],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2024-08-03T00:00:00","2024-08-03T00:00:00"],"y":[0,2.4],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2025-01-31T00:00:00","2025-01-31T00:00:00"],"y":[0,-2.4],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2025-07-07T00:00:00","2025-07-07T00:00:00"],"y":[0,1.2],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2026-04-02T00:00:00","2026-04-02T00:00:00"],"y":[0,-1.2],"type":"scatter"},{"hoverinfo":"skip","line":{"color":"lightgray","dash":"dot","width":1},"mode":"lines","showlegend":false,"x":["2026-07-31T00:00:00","2026-07-31T00:00:00"],"y":[0,1.8],"type":"scatter"},{"customdata":[["First wedding date","May 01, 2021"],["Bought house","May 19, 2023"],["Filed for divorce","January 29, 2024"],["Officially divorced","August 03, 2024"],["Started talking to Blake","January 31, 2025"],["Offically started dating Blake","July 07, 2025"],["Blake proposed","April 02, 2026"],["Blake-Karl Wedding day","July 31, 2026"]],"hovertemplate":"\u003cb\u003e%{customdata[0]}\u003c\u002fb\u003e\u003cbr\u003e%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"size":11},"mode":"markers","name":"Events","showlegend":false,"x":["2021-05-01T00:00:00.000000000","2023-05-19T00:00:00.000000000","2024-01-29T00:00:00.000000000","2024-08-03T00:00:00.000000000","2025-01-31T00:00:00.000000000","2025-07-07T00:00:00.000000000","2026-04-02T00:00:00.000000000","2026-07-31T00:00:00.000000000"],"y":[0,0,0,0,0,0,0,0],"type":"scatter"},{"customdata":[["First date with Brian S(eth) Cranford","May 01, 2020"]],"hovertemplate":"\u003cb\u003e%{customdata[0]}\u003c\u002fb\u003e\u003cbr\u003e%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"line":{"color":"white","width":2},"size":20},"mode":"markers","name":"Selected Event","showlegend":false,"x":["2020-05-01T00:00:00"],"y":[0],"type":"scatter"},{"hoverinfo":"skip","mode":"text","name":"Labels","showlegend":false,"text":["First date with Brian S(eth) Cranford","First wedding date","Bought house","Filed for divorce","Officially divorced","Started talking to Blake","Offically started dating Blake","Blake proposed","Blake-Karl Wedding day"],"textfont":{"size":12},"textposition":"middle center","x":["2020-05-01T00:00:00.000000000","2021-05-01T00:00:00.000000000","2023-05-19T00:00:00.000000000","2024-01-29T00:00:00.000000000","2024-08-03T00:00:00.000000000","2025-01-31T00:00:00.000000000","2025-07-07T00:00:00.000000000","2026-04-02T00:00:00.000000000","2026-07-31T00:00:00.000000000"],"y":{"dtype":"f8","bdata":"MzMzMzMz8z8zMzMzMzPzv83MzMzMzPw\u002fzczMzMzM\u002fL8zMzMzMzMDQDMzMzMzMwPAMzMzMzMz8z8zMzMzMzPzv83MzMzMzPw\u002f"},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"margin":{"l":40,"r":40,"t":80,"b":40},"xaxis":{"title":{"text":"Date"},"showgrid":false,"zeroline":false,"tickformat":"%b %Y"},"yaxis":{"visible":false,"range":[-3.2,3.2]},"title":{"text":"Interactive Timeline"},"hovermode":"closest","showlegend":false},                        {"responsive": true}                    )                };            </script>        </div>
+
+  <script>
+    const events = [{"event": "First date with Brian S(eth) Cranford", "date": "2020-05-01", "display_date": "May 01, 2020", "label_y": 1.2}, {"event": "First wedding date", "date": "2021-05-01", "display_date": "May 01, 2021", "label_y": -1.2}, {"event": "Bought house", "date": "2023-05-19", "display_date": "May 19, 2023", "label_y": 1.8}, {"event": "Filed for divorce", "date": "2024-01-29", "display_date": "January 29, 2024", "label_y": -1.8}, {"event": "Officially divorced", "date": "2024-08-03", "display_date": "August 03, 2024", "label_y": 2.4}, {"event": "Started talking to Blake", "date": "2025-01-31", "display_date": "January 31, 2025", "label_y": -2.4}, {"event": "Offically started dating Blake", "date": "2025-07-07", "display_date": "July 07, 2025", "label_y": 1.2}, {"event": "Blake proposed", "date": "2026-04-02", "display_date": "April 02, 2026", "label_y": -1.2}, {"event": "Blake-Karl Wedding day", "date": "2026-07-31", "display_date": "July 31, 2026", "label_y": 1.8}];
+    const state = { currentIndex: 0 };
+
+    const plot = document.getElementById("timeline_plot");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const eventSelect = document.getElementById("eventSelect");
+    const statusText = document.getElementById("statusText");
+
+    for (let i = 0; i < events.length; i++) {
+      const option = document.createElement("option");
+      option.value = String(i);
+      option.textContent = `${i + 1}. ${events[i].event}`;
+      eventSelect.appendChild(option);
+    }
+
+    function isoToDate(isoStr) {
+      return new Date(isoStr + "T00:00:00");
+    }
+
+    function buildData(index) {
+      const selected = events[index];
+
+      const connectorTraces = [];
+      const unselectedX = [];
+      const unselectedY = [];
+      const unselectedCustom = [];
+      const labelX = [];
+      const labelY = [];
+      const labelText = [];
+
+      for (let i = 0; i < events.length; i++) {
+        const ev = events[i];
+        const x = isoToDate(ev.date);
+
+        labelX.push(x);
+        labelY.push(ev.label_y);
+        labelText.push(ev.event);
+
+        connectorTraces.push({
+          x: [x, x],
+          y: [0, ev.label_y],
+          mode: "lines",
+          line: { width: 1, color: "lightgray", dash: "dot" },
+          hoverinfo: "skip",
+          showlegend: false,
+          type: "scatter"
+        });
+
+        if (i !== index) {
+          unselectedX.push(x);
+          unselectedY.push(0);
+          unselectedCustom.push([ev.event, ev.display_date]);
+        }
+      }
+
+      return [
+        {
+          x: [isoToDate(events[0].date), isoToDate(events[events.length - 1].date)],
+          y: [0, 0],
+          mode: "lines",
+          line: { width: 3, color: "gray" },
+          hoverinfo: "skip",
+          showlegend: false,
+          type: "scatter"
+        },
+        ...connectorTraces,
+        {
+          x: unselectedX,
+          y: unselectedY,
+          mode: "markers",
+          marker: { size: 11 },
+          customdata: unselectedCustom,
+          hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+          showlegend: false,
+          type: "scatter"
+        },
+        {
+          x: [isoToDate(selected.date)],
+          y: [0],
+          mode: "markers",
+          marker: { size: 20, line: { width: 2, color: "white" } },
+          customdata: [[selected.event, selected.display_date]],
+          hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+          showlegend: false,
+          type: "scatter"
+        },
+        {
+          x: labelX,
+          y: labelY,
+          mode: "text",
+          text: labelText,
+          textposition: "middle center",
+          textfont: { size: 12 },
+          hoverinfo: "skip",
+          showlegend: false,
+          type: "scatter"
+        }
+      ];
+    }
+
+    function buildLayout() {
+      return {
+        title: "Interactive Timeline",
+        template: "plotly_white",
+        hovermode: "closest",
+        showlegend: false,
+        margin: { l: 40, r: 40, t: 80, b: 40 },
+        xaxis: {
+          title: "Date",
+          showgrid: false,
+          zeroline: false,
+          tickformat: "%b %Y"
+        },
+        yaxis: {
+          visible: false,
+          range: [-3.2, 3.2]
+        }
+      };
+    }
+
+    function updateControls() {
+      const selected = events[state.currentIndex];
+      eventSelect.value = String(state.currentIndex);
+      statusText.textContent = `Selected: ${selected.event} (${selected.display_date})`;
+      prevBtn.disabled = state.currentIndex <= 0;
+      nextBtn.disabled = state.currentIndex >= events.length - 1;
+    }
+
+    function render(index) {
+      state.currentIndex = index;
+      Plotly.react(plot, buildData(index), buildLayout(), { responsive: true });
+      updateControls();
+    }
+
+    prevBtn.onclick = function () {
+      if (state.currentIndex > 0) {
+        render(state.currentIndex - 1);
+      }
+    };
+
+    nextBtn.onclick = function () {
+      if (state.currentIndex < events.length - 1) {
+        render(state.currentIndex + 1);
+      }
+    };
+
+    eventSelect.onchange = function (e) {
+      render(Number(e.target.value));
+    };
+
+    render(0);
+  </script>
+</body>
+</html>
