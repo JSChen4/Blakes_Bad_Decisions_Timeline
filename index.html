@@ -108,6 +108,39 @@
       box-shadow: var(--shadow);
       padding: 12px;
     }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px 12px 32px;
+      }
+      .page-header h1 {
+        font-size: 21px;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        gap: 8px;
+      }
+      .controls > div {
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        flex: 1 1 0;
+        padding: 11px 10px;
+      }
+      select {
+        max-width: none;
+        width: 100%;
+      }
+      .status {
+        font-size: 13px;
+      }
+      .plot-card {
+        padding: 6px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -116,8 +149,10 @@
   </div>
 
   <div class="controls">
-    <button type="button" id="prevBtn">◀ Previous</button>
-    <button type="button" id="nextBtn">Next ▶</button>
+    <div>
+      <button type="button" id="prevBtn">◀ Previous</button>
+      <button type="button" id="nextBtn">Next ▶</button>
+    </div>
     <select id="eventSelect"></select>
     <span class="status" id="statusText"></span>
   </div>
@@ -146,8 +181,17 @@
       return new Date(isoStr + "T00:00:00");
     }
 
+    function isMobile() {
+      return window.innerWidth <= 640;
+    }
+
+    function updatePlotHeight() {
+      plot.style.height = isMobile() ? "420px" : "640px";
+    }
+
     function buildData(index) {
       const selected = events[index];
+      const mobile = isMobile();
 
       const connectorTraces = [];
       const unselectedX = [];
@@ -188,7 +232,7 @@
           x: [isoToDate(events[0].date), isoToDate(events[events.length - 1].date)],
           y: [0, 0],
           mode: "lines",
-          line: { width: 4, color: "#a9b1c9" },
+          line: { width: mobile ? 3 : 4, color: "#a9b1c9" },
           hoverinfo: "skip",
           showlegend: false,
           type: "scatter"
@@ -198,7 +242,7 @@
           x: unselectedX,
           y: unselectedY,
           mode: "markers",
-          marker: { size: 12, color: "#4C78A8", line: { width: 2, color: "white" } },
+          marker: { size: mobile ? 9 : 12, color: "#4C78A8", line: { width: 2, color: "white" } },
           customdata: unselectedCustom,
           hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
           showlegend: false,
@@ -208,17 +252,19 @@
           x: [isoToDate(selected.date)],
           y: [0],
           mode: "markers",
-          marker: { size: 22, color: "#E45756", line: { width: 3, color: "white" } },
+          marker: { size: mobile ? 17 : 22, color: "#E45756", line: { width: 3, color: "white" } },
           customdata: [[selected.event, selected.display_date]],
           hovertemplate: "<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
           showlegend: false,
           type: "scatter"
         },
         {
-          x: unselectedLabelX,
-          y: unselectedLabelY,
+          // On mobile, permanent text labels overlap too much to read; rely on the
+          // red selected-event annotation and tap-to-see-tooltip for the rest.
+          x: mobile ? [] : unselectedLabelX,
+          y: mobile ? [] : unselectedLabelY,
           mode: "text",
-          text: unselectedLabelText,
+          text: mobile ? [] : unselectedLabelText,
           textposition: "middle center",
           textfont: { size: 12, color: "#444444" },
           hoverinfo: "skip",
@@ -229,10 +275,11 @@
     }
 
     function buildLayout(selected) {
+      const mobile = isMobile();
       return {
         title: {
           text: "Interactive Timeline",
-          font: { family: "Segoe UI, Arial, sans-serif", size: 20, color: "#2a2f45" }
+          font: { family: "Segoe UI, Arial, sans-serif", size: mobile ? 16 : 20, color: "#2a2f45" }
         },
         template: "plotly_white",
         hovermode: "closest",
@@ -240,13 +287,15 @@
         paper_bgcolor: "rgba(0,0,0,0)",
         plot_bgcolor: "rgba(0,0,0,0)",
         font: { family: "Segoe UI, Arial, sans-serif", color: "#2a2f45" },
-        margin: { l: 40, r: 40, t: 80, b: 50 },
+        margin: mobile ? { l: 16, r: 16, t: 56, b: 60 } : { l: 40, r: 40, t: 80, b: 50 },
         xaxis: {
-          title: "Date",
+          title: mobile ? "" : "Date",
           showgrid: true,
           gridcolor: "#eef0f7",
           zeroline: false,
-          tickformat: "%b %Y",
+          tickformat: mobile ? "%b '%y" : "%b %Y",
+          tickangle: mobile ? -45 : 0,
+          tickfont: { size: mobile ? 10 : 12 },
           linecolor: "#dfe3ee"
         },
         yaxis: {
@@ -257,14 +306,16 @@
           {
             x: isoToDate(selected.date),
             y: selected.label_y,
-            text: selected.event,
+            text: mobile && selected.event.length > 60
+              ? selected.event.slice(0, 57) + "..."
+              : selected.event,
             showarrow: false,
             bgcolor: "#E45756",
             bordercolor: "#c23e3d",
             borderwidth: 1,
-            borderpad: 6,
+            borderpad: mobile ? 4 : 6,
             font: {
-              size: 13,
+              size: mobile ? 11 : 13,
               color: "white",
               family: "Segoe UI, Arial, sans-serif"
             },
@@ -285,9 +336,25 @@
     function render(index) {
       state.currentIndex = index;
       const selected = events[index];
+      updatePlotHeight();
       Plotly.react(plot, buildData(index), buildLayout(selected), { responsive: true });
       updateControls();
     }
+
+    let resizeTimer = null;
+    let lastMobileState = isMobile();
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (isMobile() !== lastMobileState) {
+          lastMobileState = isMobile();
+          render(state.currentIndex);
+        } else {
+          updatePlotHeight();
+          Plotly.Plots.resize(plot);
+        }
+      }, 150);
+    });
 
     prevBtn.onclick = function () {
       if (state.currentIndex > 0) {
